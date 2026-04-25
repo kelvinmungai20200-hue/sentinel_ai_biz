@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sentinel AI | Professional Cyber Audit</title>
+    <script src="https://tailwindcss.com"></script>
+    <style>
+        body { background-color: #020617; background-image: radial-gradient(at 0% 0%, rgba(30, 58, 138, 0.3) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(15, 23, 42, 0.3) 0px, transparent 50%); }
+        .cyber-glass { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(15px); border: 1px solid rgba(59, 130, 246, 0.1); }
+        .text-neon { color: #22d3ee; text-shadow: 0 0 8px rgba(34, 211, 238, 0.5); }
+    </style>
+</head>
+<body class="text-slate-100 min-h-screen flex flex-col items-center justify-center p-4">
+    <div class="text-center mb-10">
+        <div class="inline-block px-3 py-1 border border-cyan-500/30 rounded-full text-[10px] tracking-[0.3em] text-cyan-400 mb-4 font-mono uppercase">System Operational</div>
+        <h1 class="text-7xl font-black italic tracking-tighter text-neon mb-2">SENTINEL<span class="text-white">AI</span></h1>
+        <p class="text-slate-500 font-medium">Autonomous Vulnerability Detection</p>
+    </div>
+
+    <div class="w-full max-w-2xl cyber-glass p-8 rounded-[2rem] shadow-2xl">
+        <div class="relative flex gap-3 p-1.5 bg-slate-950 rounded-2xl border border-slate-800 focus-within:border-cyan-500/50">
+            <input id="urlInput" type="text" placeholder="target-domain.com" class="flex-1 bg-transparent p-4 outline-none text-cyan-50 font-mono">
+            <button onclick="run()" class="bg-cyan-600 hover:bg-cyan-500 text-slate-950 px-8 rounded-xl font-black uppercase transition-all">Scan</button>
+        </div>
+
+        <div id="loading" class="hidden mt-12 text-center animate-pulse">
+            <p class="text-cyan-400 font-mono text-sm tracking-widest uppercase">Analyzing Network Headers...</p>
+        </div>
+
+        <div id="res" class="hidden mt-10 space-y-6">
+            <div class="bg-slate-900/50 p-6 rounded-2xl border border-slate-800">
+                <div id="score" class="text-7xl font-black italic tracking-tighter"></div>
+            </div>
+            <div id="fixes" class="space-y-3"></div>
+            <button id="payBtn" onclick="checkout()" class="w-full bg-emerald-500 hover:bg-emerald-400 text-emerald-950 py-5 rounded-2xl font-black text-xl uppercase active:scale-95">Unlock Forensic Report ($19)</button>
+        </div>
+
+        <div id="downloadSection" class="hidden mt-10 text-center p-6 bg-green-500/10 border border-green-500/20 rounded-2xl">
+            <p class="text-green-400 font-bold mb-4">Verification Successful!</p>
+            <a id="downloadLink" href="#" class="inline-block bg-white text-black px-10 py-4 rounded-xl font-black uppercase">Download PDF Report</a>
+        </div>
+    </div>
+
+    <script>
+        let currentScanId = null;
+        let currentUrl = null;
+
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('paid')) {
+            document.getElementById('downloadSection').classList.remove('hidden');
+            document.getElementById('downloadLink').href = `/download/${urlParams.get('paid')}`;
+        }
+
+        async function run() {
+            currentUrl = document.getElementById('urlInput').value;
+            if(!currentUrl) return;
+            document.getElementById('loading').classList.remove('hidden');
+            document.getElementById('res').classList.add('hidden');
+            const response = await fetch(`/scan?url=${currentUrl}`);
+            const d = await response.json();
+            currentScanId = d.id;
+            document.getElementById('loading').classList.add('hidden');
+            document.getElementById('res').classList.remove('hidden');
+            const scoreEl = document.getElementById('score');
+            scoreEl.innerText = d.report.score;
+            scoreEl.className = `text-7xl font-black italic tracking-tighter ${d.report.color}`;
+            document.getElementById('fixes').innerHTML = d.report.fixes.map(f => `<div class="bg-slate-950/50 p-4 rounded-xl border border-slate-800 text-xs text-slate-300">⚠️ ${f}</div>`).join('');
+        }
+
+        async function checkout() {
+            const btn = document.getElementById('payBtn');
+            btn.innerText = "REDIRECTING...";
+            const response = await fetch(`/pay/${currentScanId}?url=${currentUrl}`, {method:'POST'});
+            const data = await response.json();
+            if(data.status === "success") window.location.href = data.data.link;
+        }
+    </script>
+</body>
+</html>
