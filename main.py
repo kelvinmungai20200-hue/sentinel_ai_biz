@@ -10,7 +10,7 @@ app = FastAPI()
 
 # --- CONFIGURATION ---
 PAYSTACK_SECRET_KEY = os.getenv("PAYSTACK_SECRET_KEY", "sk_test_YOUR_KEY_HERE") 
-LIVE_URL = ""
+LIVE_URL = "https://sentinel-ai-biz.onrender.com"
 
 # 1. Database Setup
 def init_db():
