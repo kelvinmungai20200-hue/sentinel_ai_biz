@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sentinel AI | Professional Cyber Audit</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #020617; background-image: radial-gradient(at 0% 0%, rgba(30, 58, 138, 0.3) 0px, transparent 50%), radial-gradient(at 100% 100%, rgba(15, 23, 42, 0.3) 0px, transparent 50%); }
+        .cyber-glass { background: rgba(15, 23, 42, 0.7); backdrop-filter: blur(15px); border: 1px solid rgba(59, 130, 246, 0.1); }
+        .text-neon { color: #22d3ee; text-shadow: 0 0 10px rgba(34, 211, 238, 0.6); }
+        .neon-glow { box-shadow: 0 0 15px rgba(34, 211, 238, 0.3); }
+    </style>
+</head>
+<body class="text-slate-100 min-h-screen flex flex-col items-center py-10 px-4">
+
+    <!-- NAVBAR -->
+    <nav class="w-full max-w-6xl flex justify-between items-center mb-12 px-6">
+        <div class="text-neon font-black italic tracking-widest uppercase">Sentinel AI</div>
+        <div class="flex gap-6">
+            <button onclick="toggleAuth()" class="text-[10px] font-bold tracking-widest hover:text-cyan-400 transition">LOGIN</button>
+            <button onclick="toggleAuth()" class="bg-cyan-600 text-slate-950 px-4 py-2 rounded-lg text-[10px] font-black tracking-widest">SIGN UP</button>
+        </div>
+    </nav>
+
+    <!-- 🛡️ FUTURISTIC ICON -->
+    <div class="relative w-24 h-24 mb-6 flex items-center justify-center">
+        <div class="absolute inset-0 rounded-full border-4 border-t-cyan-500 border-r-transparent border-b-cyan-500 border-l-transparent animate-spin"></div>
+        <div class="absolute inset-2 rounded-full border-2 border-dashed border-blue-400 animate-[spin_3s_linear_infinite_reverse]"></div>
+        <div class="text-4xl">🛡️</div>
+    </div>
+
+    <!-- BRANDING & MISSION -->
+    <div class="text-center mb-10 max-w-2xl">
+        <h1 class="text-6xl font-black italic tracking-tighter text-neon mb-4 uppercase">AUTONOMOUS AUDITOR</h1>
+        <div class="p-6 bg-blue-900/20 border border-blue-500/20 rounded-3xl mb-8">
+            <p class="text-slate-400 text-sm leading-relaxed">
+                Sentinel AI is a distributed neural network designed to simulate advanced persistent threats (APT) and identify server misconfigurations in real-time.
+            </p>
+        </div>
+        <div class="grid grid-cols-2 gap-4">
+            <div class="p-4 bg-slate-900/60 border border-slate-800 rounded-2xl">
+                <h4 class="text-cyan-400 font-bold text-[10px] uppercase mb-1">Our Mission</h4>
+                <p class="text-[9px] text-slate-500 uppercase">Democratizing enterprise security for everyone.</p>
+            </div>
+            <div class="p-4 bg-slate-900/60 border border-slate-800 rounded-2xl">
+                <h4 class="text-blue-400 font-bold text-[10px] uppercase mb-1">Our Vision</h4>
+                <p class="text-[9px] text-slate-500 uppercase">A global standard for autonomous AI defense.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN APP CARD -->
+    <div class="w-full max-w-2xl cyber-glass p-8 rounded-[2.5rem] shadow-2xl relative overflow-hidden mb-12">
+        <div class="relative flex items-center bg-slate-950 rounded-2xl border border-slate-800 focus-within:border-cyan-500/50 p-1">
+            <span class="pl-4">🛡️</span>
+            <input id="urlInput" type="text" placeholder="target-domain.com" class="flex-1 bg-transparent p-4 outline-none text-cyan-50 font-mono text-sm">
+            <button onclick="runScan()" class="bg-cyan-600 hover:bg-cyan-500 text-slate-950 px-8 py-4 rounded-xl font-black uppercase tracking-wider transition-all">Scan</button>
+        </div>
+
+        <div id="terminal" class="hidden mt-8 p-5 bg-black/80 rounded-xl border border-slate-800 font-mono text-[10px] text-emerald-500 space-y-1">
+            <div id="t1" class="hidden">>> INITIALIZING NEURAL HANDSHAKE... [OK]</div>
+            <div id="t2" class="hidden">>> ANALYZING HTTP HEADERS... [OK]</div>
+            <div id="t3" class="hidden">>> CHECKING DATABASE EXPOSURE... [OK]</div>
+            <div id="t4" class="hidden">>> GENERATING FORENSIC VERDICT... [DONE]</div>
+        </div>
+
+        <div id="res" class="hidden mt-10 space-y-6">
+            <div id="score" class="text-8xl font-black italic tracking-tighter text-center"></div>
+            <div id="fixes" class="space-y-3"></div>
+            <button id="payBtn" onclick="checkout()" class="w-full bg-emerald-600 hover:bg-emerald-500 py-6 rounded-2xl font-black text-xl uppercase shadow-lg transition-all active:scale-95">Unlock Forensic Report ($19)</button>
+            <div class="flex justify-center gap-4 text-[10px] opacity-30 font-bold uppercase"><span>PayPal</span>•<span>Visa</span>•<span>M-Pesa</span></div>
+        </div>
+
+        <!-- Download Section -->
+        <div id="downloadSection" class="hidden mt-10 text-center p-8 bg-green-500/10 border border-green-500/20 rounded-3xl">
+            <p class="text-green-400 font-bold mb-4 uppercase tracking-widest">Transaction Verified</p>
+            <a id="downloadLink" href="#" class="inline-block bg-white text-black px-12 py-4 rounded-xl font-black uppercase tracking-widest">Download PDF Audit</a>
+        </div>
+    </div>
+
+    <!-- 🤖 AI CONSULTANT CHAT -->
+    <div id="chatBox" class="fixed bottom-6 right-6 w-80 hidden z-50">
+        <div class="cyber-glass rounded-2xl border border-cyan-500/30 overflow-hidden shadow-2xl">
+            <div class="bg-cyan-600 p-4 font-black text-[10px] tracking-widest text-slate-950 flex justify-between items-center">
+                <span>AI CONSULTANT</span>
+                <button onclick="toggleChat()">✕</button>
+            </div>
+            <div id="chatMessages" class="h-64 p-4 overflow-y-auto text-[10px] space-y-3 font-mono bg-slate-950/80">
+                <div class="text-cyan-400">>> Sentinel AI online. How can I help?</div>
+            </div>
+            <div class="p-2 bg-slate-900 flex border-t border-slate-800">
+                <input id="chatInput" type="text" placeholder="Ask about HSTS, XSS..." class="flex-1 bg-transparent p-2 text-[10px] outline-none">
+                <button onclick="sendMessage()" class="text-cyan-500 p-2 font-bold text-[10px]">SEND</button>
+            </div>
+        </div>
+    </div>
+    <button onclick="toggleChat()" class="fixed bottom-6 right-6 bg-cyan-600 p-4 rounded-full shadow-lg hover:scale-110 transition-all z-40 neon-glow">💬</button>
+
+    <!-- Auth Modal -->
+    <div id="authModal" class="hidden fixed inset-0 bg-black/90 flex items-center justify-center p-4 z-50">
+        <div class="w-full max-w-sm cyber-glass p-10 rounded-[2.5rem] border border-cyan-500/20 text-center">
+            <h2 class="text-2xl font-black text-neon mb-6">SECURE ACCESS</h2>
+            <input type="email" placeholder="Email" class="w-full bg-slate-950 border border-slate-800 p-4 rounded-xl mb-4 text-sm outline-none">
+            <input type="password" placeholder="Password" class="w-full bg-slate-950 border border-slate-800 p-4 rounded-xl mb-6 text-sm outline-none">
+            <button onclick="toggleAuth()" class="w-full bg-cyan-600 py-4 rounded-xl font-black uppercase text-sm">Authorize</button>
+        </div>
+    </div>
+
+    <script>
+        let currentScanId = null;
+        let currentUrl = null;
+
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has('paid')) {
+            document.getElementById('downloadSection').classList.remove('hidden');
+            document.getElementById('downloadLink').href = `/download/${urlParams.get('paid')}`;
+        }
+
+        function toggleAuth() { document.getElementById('authModal').classList.toggle('hidden'); }
+        function toggleChat() { document.getElementById('chatBox').classList.toggle('hidden'); }
+
+        async function runScan() {
+            currentUrl = document.getElementById('urlInput').value;
+            if(!currentUrl) return;
+            document.getElementById('terminal').classList.remove('hidden');
+            document.getElementById('res').classList.add('hidden');
+            for(let i=1; i<=4; i++) {
+                document.getElementById(`t${i}`).classList.remove('hidden');
+                await new Promise(r => setTimeout(r, 600));
+            }
+            const resData = await (await fetch(`/scan?url=${currentUrl}`)).json();
+            currentScanId = resData.id;
+            document.getElementById('terminal').classList.add('hidden');
+            document.getElementById('res').classList.remove('hidden');
+            document.getElementById('score').innerText = resData.report.score;
+            document.getElementById('score').className = `text-8xl font-black italic tracking-tighter text-center ${resData.report.color}`;
+            document.getElementById('fixes').innerHTML = resData.report.fixes.map(f => `<div class='bg-slate-950/80 p-3 rounded-lg border border-slate-800 text-[10px] text-slate-400'>◈ ${f}</div>`).join('');
+        }
+
+        async function checkout() {
+            const btn = document.getElementById('payBtn');
+            btn.innerText = "REDIRECTING...";
+            const res = await (await fetch(`/pay/${currentScanId}?url=${currentUrl}`, {method:'POST'})).json();
+            if(res.status && res.data.authorization_url) window.location.href = res.data.authorization_url;
+            else alert("Gateway Error. Check Paystack Key.");
+        }
+
+        async function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const chatMessages = document.getElementById('chatMessages');
+            const msg = input.value;
+            if(!msg) return;
+            chatMessages.innerHTML += `<div class="text-slate-400 text-right">User: ${msg}</div>`;
+            input.value = "";
+            const res = await (await fetch('/ai-consultant', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({message:msg})})).json();
+            chatMessages.innerHTML += `<div class="text-cyan-400">>> ${res.reply}</div>`;
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+    </script>
+</body>
+</html>
